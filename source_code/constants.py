@@ -1,6 +1,6 @@
 # Constants
 
 #sqlite database location
-DATABASE = "/home/selimberntsen/raspberry_sensors.db" 
+DATABASE = "/home/selim/raspberry_sensors.db" 
 
 

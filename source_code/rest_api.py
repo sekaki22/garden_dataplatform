@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from sensors import Dht_22
 from constants import DATABASE
 from helpers import fetch_database
 import sqlite3
@@ -12,6 +11,12 @@ app = FastAPI()
 class DHT22_Model(BaseModel):
     temperature: float
     humidity: float
+
+
+
+@app.get("/")
+def root_test():
+    return {"response": "server is online"}
 
 
 # Get data from sqlite db

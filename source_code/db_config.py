@@ -24,11 +24,28 @@ visibility INTEGER,
 infrared INTEGER);
 """
 
-# Execute statements on database file
-table_statements = [create_table_statement_dht, create_table_statement_tsl]
+# Create table statement RAINDROP_SENS
+create_table_statement_rs = """
+CREATE TABLE IF NOT EXISTS raindrop_sens
+(id INTEGER PRIMARY KEY AUTOINCREMENT,
+date_time DATETIME,
+raw_value REAL);
+"""
 
-for sql_statement in table_statements:
-    cursor.execute(table_statement)
+# Create table statement Soil Moisture 
+create_table_statement_sm = """
+CREATE TABLE IF NOT EXISTS soil_mositure_sens
+(id INTEGER PRIMARY KEY AUTOINCREMENT,
+date_time DATETIME,
+raw_value REAL);
+"""
+
+# Execute statements on database file
+sql_statements = [create_table_statement_dht, create_table_statement_tsl, 
+                  create_table_statement_rs, create_table_statement_sm]
+
+for sql_statement in sql_statements:
+    cursor.execute(sql_statement)
 
 conn.commit()
 conn.close()
