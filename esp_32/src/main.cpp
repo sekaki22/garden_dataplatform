@@ -22,7 +22,7 @@
 
 
 // Read digital pins
-const int digitalPin1 = 4;
+const int digitalPin1 = 18;
 
 // Read analog pins
 const int analogPin1 = 32; // Analog input pin 1 (GPIO32)
@@ -36,7 +36,7 @@ const int   daylightOffset_sec = 0;
 DHT dht(digitalPin1, DHTTYPE);
 
  // Define tsl2591 object 
-Adafruit_TSL2591  tsl = Adafruit_TSL2591(2591);
+//Adafruit_TSL2591  tsl = Adafruit_TSL2591(2591);
 
 
 
@@ -61,7 +61,7 @@ void setup() {
   dht.begin();
 
   // setup tsl
-  setupTsl(tsl);
+  //setupTsl(tsl);
 
   // Initialize time
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
@@ -72,8 +72,6 @@ void setup() {
 
 void loop() {
   delay(2000);
-  digitalWrite(LED_BUILTIN, HIGH);
-  
 
   // Read and print the date and time
   String dateTimeNow = getFormattedLocalTime();
@@ -94,12 +92,19 @@ void loop() {
   Serial.println(soilMoistureValue/1000);
 
   // Read and print tsl value 
+  //std::map<std::string, uint16_t> tsl_ma = readAndPrintTsl(tsl);
 
-  std::map<std::string, uint16_t> tsl_ma = readAndPrintTsl(tsl);
+  // Send data over http to raspberry
+  String temperature = String(dht_map["temperature"], 2);
+  String humidity = String(dht_map["humidity"], 2);
+  String dhtUrl = "http://"+privateIpPi+portnumber+"/sensors/dht_22";
+  String payLoad = "{\"temperature\":" + temperature +",\"humidity\":" + humidity +"}";
+  Serial.println(dhtUrl);
+  Serial.println(payLoad);
+
+  sendHttpPostRequest(dhtUrl, payLoad);
 
   // Add a small delay for stability
   delay(2000);
-
-  digitalWrite(LED_BUILTIN, LOW);
 
 }

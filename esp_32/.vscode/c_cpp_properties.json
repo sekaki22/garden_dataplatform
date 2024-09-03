@@ -10,6 +10,8 @@
             "includePath": [
                 "/home/selim-berntsen/Documents/repos/garden_dataplatform/esp_32/include",
                 "/home/selim-berntsen/Documents/repos/garden_dataplatform/esp_32/src",
+                "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/HTTPClient/src",
+                "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                 "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                 "/home/selim-berntsen/Documents/repos/garden_dataplatform/esp_32/.pio/libdeps/nodemcu-32s/Adafruit TSL2591 Library",
                 "/home/selim-berntsen/Documents/repos/garden_dataplatform/esp_32/.pio/libdeps/nodemcu-32s/Adafruit BusIO",
@@ -224,7 +226,6 @@
                 "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/Ethernet/src",
                 "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/FFat/src",
                 "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/FS/src",
-                "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/HTTPClient/src",
                 "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/HTTPUpdate/src",
                 "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/HTTPUpdateServer/src",
                 "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/I2S/src",
@@ -241,7 +242,6 @@
                 "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/USB/src",
                 "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
                 "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/WebServer/src",
-                "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                 "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/WiFiProv/src",
                 ""
             ],
@@ -250,6 +250,8 @@
                 "path": [
                     "/home/selim-berntsen/Documents/repos/garden_dataplatform/esp_32/include",
                     "/home/selim-berntsen/Documents/repos/garden_dataplatform/esp_32/src",
+                    "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/HTTPClient/src",
+                    "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                     "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                     "/home/selim-berntsen/Documents/repos/garden_dataplatform/esp_32/.pio/libdeps/nodemcu-32s/Adafruit TSL2591 Library",
                     "/home/selim-berntsen/Documents/repos/garden_dataplatform/esp_32/.pio/libdeps/nodemcu-32s/Adafruit BusIO",
@@ -464,7 +466,6 @@
                     "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/Ethernet/src",
                     "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/FFat/src",
                     "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/FS/src",
-                    "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/HTTPClient/src",
                     "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/HTTPUpdate/src",
                     "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/HTTPUpdateServer/src",
                     "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/I2S/src",
@@ -481,7 +482,6 @@
                     "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/USB/src",
                     "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
                     "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/WebServer/src",
-                    "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                     "/home/selim-berntsen/.platformio/packages/framework-arduinoespressif32/libraries/WiFiProv/src",
                     ""
                 ]

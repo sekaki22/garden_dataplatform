@@ -9,6 +9,8 @@
 #include <SPI.h>
 #include <array>
 #include <map>
+#include <WiFi.h>
+#include <HTTPClient.h>
 
 String getFormattedLocalTime() {
     struct tm timeinfo;
@@ -98,6 +100,30 @@ std::map<std::string, uint16_t> readAndPrintTsl (Adafruit_TSL2591 tsl){
   delay(2000);
 
   return tslValues;
+}
+
+void sendHttpPostRequest(const String& url, const String& jsonPayload) {
+    if (WiFi.status() == WL_CONNECTED) { // Check WiFi connection status
+        HTTPClient http;
+
+        http.begin(url);                 // Specify the URL
+        http.addHeader("Content-Type", "application/json"); // Specify content-type header
+
+        int httpResponseCode = http.POST(jsonPayload);  // Send the POST request
+
+        if (httpResponseCode > 0) {
+            String response = http.getString();          // Get the response to the request
+            Serial.println(httpResponseCode);            // Print return code
+            Serial.println(response);                    // Print the response
+        } else {
+            Serial.print("Error on sending POST: ");
+            Serial.println(httpResponseCode);
+        }
+
+        http.end();  // Free resources
+    } else {
+        Serial.println("WiFi not connected");
+    }
 }
 
 #endif // UTILS_H
