@@ -3,15 +3,10 @@ from constants import DATABASE
 from helpers import fetch_database
 import sqlite3
 import json
-from pydantic import BaseModel
+from sensor_models import DHT22, TSL2591, SoilMoisture, RainDrop
 from datetime import datetime
 
 app = FastAPI()
-
-class DHT22_Model(BaseModel):
-    temperature: float
-    humidity: float
-
 
 
 @app.get("/")
@@ -44,6 +39,7 @@ def get_dht22(from_date:str):
 @app.post('/sensors/dht_22')
 def post_dht22(instance: DHT22_Model):
     """
+    Process post requests by ingesting payload into database
     """    
     
     # Create a cursor
@@ -59,6 +55,58 @@ def post_dht22(instance: DHT22_Model):
     datetime_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     database_input = (datetime_now, instance.temperature, 
                             instance.humidity)
+    # Execute and commit :)
+    cursor.execute(query, database_input)
+    conn.commit() 
+    
+    return "200: Data was ingested into database"
+
+    @app.post('/sensors/tsl2591')
+def post_tsl2591(instance: DHT22_Model):
+    """
+    Process post requests by ingesting payload into database
+    """    
+    
+    # Create a cursor
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    
+    query = f"""
+            INSERT INTO dht_22 (date_time, lux, visibility,
+                                infrared)
+            VALUES (?, ?, ?)
+            """ 
+   
+    # Create database input
+    datetime_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    database_input = (datetime_now, instance.lux, 
+                      instance.visibility, instance.infrared)
+    # Execute and commit :)
+    cursor.execute(query, database_input)
+    conn.commit() 
+    
+    return "200: Data was ingested into database"
+
+    @app.post('/sensors/analog_inputs')
+def post_analog(instance: DHT22_Model):
+    """
+    Process post requests by ingesting payload into database
+    """    
+    
+    # Create a cursor
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    
+    query = f"""
+            INSERT INTO dht_22 (date_time, lux, visibility,
+                                infrared)
+            VALUES (?, ?, ?)
+            """ 
+   
+    # Create database input
+    datetime_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    database_input = (datetime_now, instance.lux, 
+                      instance.visibility, instance.infrared)
     # Execute and commit :)
     cursor.execute(query, database_input)
     conn.commit() 
