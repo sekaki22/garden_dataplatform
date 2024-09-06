@@ -1,9 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from constants import DATABASE
 from helpers import fetch_database
 import sqlite3
 import json
-from sensor_models import DHT22, TSL2591, SoilMoisture, RainDrop
+from sensor_models import DHT22, TSL2591, BasicAnalogSensor
 from datetime import datetime
 
 app = FastAPI()
@@ -37,7 +37,7 @@ def get_dht22(from_date:str):
 
 # Post data to sqlite db
 @app.post('/sensors/dht_22')
-def post_dht22(instance: DHT22_Model):
+def post_dht22(instance: DHT22):
     """
     Process post requests by ingesting payload into database
     """    
@@ -62,7 +62,7 @@ def post_dht22(instance: DHT22_Model):
     return "200: Data was ingested into database"
 
     @app.post('/sensors/tsl2591')
-def post_tsl2591(instance: DHT22_Model):
+def post_tsl2591(instance: TSL2591):
     """
     Process post requests by ingesting payload into database
     """    
@@ -88,7 +88,7 @@ def post_tsl2591(instance: DHT22_Model):
     return "200: Data was ingested into database"
 
     @app.post('/sensors/analog_inputs')
-def post_analog(instance: DHT22_Model):
+def post_analog(instance: BasicAnalogSensor, table_name: str):
     """
     Process post requests by ingesting payload into database
     """    
@@ -98,15 +98,13 @@ def post_analog(instance: DHT22_Model):
     cursor = conn.cursor()
     
     query = f"""
-            INSERT INTO dht_22 (date_time, lux, visibility,
-                                infrared)
+            INSERT INTO {table_name} (date_time, raw_value)
             VALUES (?, ?, ?)
             """ 
    
     # Create database input
     datetime_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    database_input = (datetime_now, instance.lux, 
-                      instance.visibility, instance.infrared)
+    database_input = (datetime_now, instance.analog_value)
     # Execute and commit :)
     cursor.execute(query, database_input)
     conn.commit() 

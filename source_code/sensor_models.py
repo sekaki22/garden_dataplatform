@@ -9,8 +9,6 @@ class TSL2591(BaseModel):
     visibility: float
     infrared: float
 
-class SoilMoisture(BaseModel):
+class BasicAnalogSensor(BaseModel):
     analog_value: float
 
-class RainDrop(BaseModel):
-    analog_value: float
