@@ -15,7 +15,7 @@ def root_test():
 
 
 # Get data from sqlite db
-@app.get('/sensors/dht_22')
+@app.get('/sensors/dht22')
 def get_dht22(from_date:str):
     """ 
     from_date: Get the data from a specific date untill now
@@ -36,7 +36,7 @@ def get_dht22(from_date:str):
     return json.dumps(results, indent=4)
 
 # Post data to sqlite db
-@app.post('/sensors/dht_22')
+@app.post('/sensors/dht22')
 def post_dht22(instance: DHT22):
     """
     Process post requests by ingesting payload into database
@@ -61,7 +61,8 @@ def post_dht22(instance: DHT22):
     
     return "200: Data was ingested into database"
 
-    @app.post('/sensors/tsl2591')
+
+@app.post('/sensors/tsl2591')
 def post_tsl2591(instance: TSL2591):
     """
     Process post requests by ingesting payload into database
@@ -72,9 +73,9 @@ def post_tsl2591(instance: TSL2591):
     cursor = conn.cursor()
     
     query = f"""
-            INSERT INTO dht_22 (date_time, lux, visibility,
+            INSERT INTO tsl_2591 (date_time, lux, visibility,
                                 infrared)
-            VALUES (?, ?, ?)
+            VALUES (?, ?, ?, ?)
             """ 
    
     # Create database input
@@ -87,7 +88,7 @@ def post_tsl2591(instance: TSL2591):
     
     return "200: Data was ingested into database"
 
-    @app.post('/sensors/analog_inputs')
+@app.post('/sensors/analog_inputs')
 def post_analog(instance: BasicAnalogSensor, table_name: str):
     """
     Process post requests by ingesting payload into database
@@ -99,7 +100,7 @@ def post_analog(instance: BasicAnalogSensor, table_name: str):
     
     query = f"""
             INSERT INTO {table_name} (date_time, raw_value)
-            VALUES (?, ?, ?)
+            VALUES (?, ?)
             """ 
    
     # Create database input
@@ -111,4 +112,4 @@ def post_analog(instance: BasicAnalogSensor, table_name: str):
     
     return "200: Data was ingested into database"
 
-     
+

@@ -34,7 +34,7 @@ raw_value REAL);
 
 # Create table statement Soil Moisture 
 create_table_statement_sm = """
-CREATE TABLE IF NOT EXISTS soil_mositure_sens
+CREATE TABLE IF NOT EXISTS soil_moisture_sens
 (id INTEGER PRIMARY KEY AUTOINCREMENT,
 date_time DATETIME,
 raw_value REAL);
