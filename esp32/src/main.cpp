@@ -110,8 +110,8 @@ void loop() {
   sendHttpPostRequest(tslUrl, tslPayLoad);
 
   // Send analog signals to raspberry 
-  float rainDropValue = analogRead(analogPin1)/1000;
-  float soilMoistureValue = analogRead(analogPin2)/1000;
+  float rainDropValue = analogRead(analogPin1);
+  float soilMoistureValue = analogRead(analogPin2);
   String rainDropUrl = "http://"+privateIpPi+portnumber+analog_endpoint+"?table_name=raindrop_sens";
   String soilMoistureUrl = "http://"+privateIpPi+portnumber+analog_endpoint+"?table_name=soil_moisture_sens";
   String rainDropPL = "{\"analog_value\":" + String(rainDropValue) + "}";
