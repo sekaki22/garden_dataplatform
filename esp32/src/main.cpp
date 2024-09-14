@@ -70,13 +70,11 @@ void setup() {
   // Initialize time
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
 
-  delay(2000);
+  delay(5000);
 
 }
 
 void loop() {
-  delay(5000);
-
   // Read and print the date and time
   String dateTimeNow = getFormattedLocalTime();
   Serial.print("Current datetime:  ");
@@ -121,6 +119,6 @@ void loop() {
   sendHttpPostRequest(soilMoistureUrl, soilMoisturePL);
 
   // Add a small delay for stability
-  delay(10000);
+  delay(60000);
 
 }
