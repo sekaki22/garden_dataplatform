@@ -4,6 +4,8 @@ The goal of this project is to improve the yield in my vegetable garden by readi
 
 - DHT22 (temperature and humidity)
 - TSL 2591 (Light intensity using lux & infrared measurements)
+- Soil moisture (analog read)
+- Raindrop (analog read)
 
 **To do: add more information about architecture and how to use the code**
 
