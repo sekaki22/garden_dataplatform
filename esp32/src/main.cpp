@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <WiFi.h>
-#include <time.h>
+//#include <time.h>
 #include <environment_var.h>
 #include <DHT.h>
 #include <SPI.h>
@@ -11,6 +11,7 @@
 #include <utils.h>
 #include <array>
 #include <map>
+#include <esp_sleep.h>
 
 // Wi-Fi credentials from build flags
 // const char* ssid = WIFI_SSID;
@@ -29,9 +30,9 @@ const int analogPin1 = 32; // Analog input pin 1 (GPIO32)
 const int analogPin2 = 33; // Analog input pin 2 (GPIO33)
 
 // Time configuration
-const char* ntpServer = "pool.ntp.org";
-const long  gmtOffset_sec = 7200;
-const int   daylightOffset_sec = 0;
+// const char* ntpServer = "pool.ntp.org";
+// const long  gmtOffset_sec = 7200;
+// const int   daylightOffset_sec = 0;
 
 DHT dht(digitalPin1, DHTTYPE);
 
@@ -68,17 +69,17 @@ void setup() {
   setupTsl(tsl);
 
   // Initialize time
-  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+  // configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
 
-  delay(5000);
+  delay(10000);
 
 }
 
 void loop() {
   // Read and print the date and time
-  String dateTimeNow = getFormattedLocalTime();
-  Serial.print("Current datetime:  ");
-  Serial.println(dateTimeNow);
+  // String dateTimeNow = getFormattedLocalTime();
+  // Serial.print("Current datetime:  ");
+  // Serial.println(dateTimeNow);
 
   std::map<std::string, float> dht_map = readAndPrintDht(dht);
 
@@ -118,7 +119,10 @@ void loop() {
   sendHttpPostRequest(rainDropUrl, rainDropPL);
   sendHttpPostRequest(soilMoistureUrl, soilMoisturePL);
 
-  // Add a small delay for stability
-  delay(60000);
+  // Go into deep sleep mode to save costs
+  esp_sleep_enable_timer_wakeup(60 * 1000000);  // 60 seconds (1 minute) in microseconds
+  Serial.println("Going to sleep for 60 seconds...");
+  esp_deep_sleep_start();
+
 
 }
