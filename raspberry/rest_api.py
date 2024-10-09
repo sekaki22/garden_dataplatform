@@ -113,3 +113,24 @@ def post_analog(instance: BasicAnalogSensor, table_name: str):
     return "200: Data was ingested into database"
 
 
+# Return the last record og any given sensor
+@app.get('/sensors/{sensor_name}/last_value')
+async def return_last_value(sensor_name:str):
+    """ 
+    sensor_name: The name of the sensor you want the latest file from
+    
+    returns: most recent record in json form 
+    """
+    # Create a cursor
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    
+    query = f"""
+    SELECT *
+    FROM {sensor_name}
+    ORDER BY id DESC LIMIT 1
+    """
+    results = fetch_database(cursor, query)
+    
+    return json.dumps(results, indent=4)
+
