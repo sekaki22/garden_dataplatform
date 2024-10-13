@@ -22,7 +22,7 @@ with col1:
         format="MM/DD/YY - HH:mm",
         key="temp_datetime_range"
     )
-    fig_temp = plot_timeseries_with_thresholds("dht_22", DATABASE, "temperature in Celsius", since_temp, until_temp)
+    fig_temp = plot_timeseries("dht_22", DATABASE, "temperature in Celsius", since_temp, until_temp)
     st.plotly_chart(fig_temp)
 
     since_hum, until_hum = st.slider(
@@ -33,7 +33,7 @@ with col1:
     )
     
     # Datetime range slider for humidit
-    fig_hum = plot_timeseries_with_thresholds("dht_22", DATABASE, "humidity %", 100, "threshold.json", (since_hum, until_hum))
+    fig_hum = plot_timeseries("dht_22", DATABASE, "humidity %", since_hum, until_hum)
     st.plotly_chart(fig_hum)
 
 
@@ -47,7 +47,7 @@ with col2:
     key="lux_datetime_range"
 )
 
-    fig_lux = plot_timeseries_with_thresholds("tsl_2591", DATABASE, "lux", 60, "threshold.json", (since_lux, until_lux))
+    fig_lux = plot_timeseries("tsl_2591", DATABASE, "lux", since_lux, until_lux)
     st.plotly_chart(fig_lux)
 
     since_soil, until_soil = st.slider(
