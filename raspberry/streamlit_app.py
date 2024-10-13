@@ -22,7 +22,7 @@ with col1:
         format="MM/DD/YY - HH:mm",
         key="temp_datetime_range"
     )
-    fig_temp = plot_timeseries("dht_22", DATABASE, "temperature in Celsius", since_temp, until_temp)
+    fig_temp = plot_timeseries("dht_22", DATABASE, "temp_c", since_temp, until_temp)
     st.plotly_chart(fig_temp)
 
     since_hum, until_hum = st.slider(
@@ -33,7 +33,7 @@ with col1:
     )
     
     # Datetime range slider for humidit
-    fig_hum = plot_timeseries("dht_22", DATABASE, "humidity %", since_hum, until_hum)
+    fig_hum = plot_timeseries("dht_22", DATABASE, "humidity_perc", since_hum, until_hum)
     st.plotly_chart(fig_hum)
 
 
@@ -57,7 +57,7 @@ with col2:
     key="soil_datetime_range"
 )
     # Datetime range slider for soil moistur
-    fig_soil = plot_timeseries("soil_moisture_sens", DATABASE, "milli voltage", since_soil, until_soil)
+    fig_soil = plot_timeseries("soil_moisture_sens", DATABASE, "raw_value", since_soil, until_soil)
     st.plotly_chart(fig_soil)
 
 
