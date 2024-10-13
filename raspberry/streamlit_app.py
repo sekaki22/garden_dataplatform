@@ -1,6 +1,6 @@
 import streamlit as st
 from constants import DATABASE
-from helpers import plot_timeseries_with_thresholds
+from helpers import plot_timeseries 
 import plotly.express as px
 from datetime import datetime, timedelta
 
