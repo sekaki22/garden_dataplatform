@@ -11,6 +11,19 @@ st.write("""
          in Kellys' vegetable garden :tomato: :eggplant: :hot_pepper: :pear:
         """)
 
+# Initialize session state for each datetime range if not already set
+if 'temp_datetime_range' not in st.session_state:
+    st.session_state.temp_datetime_range = (datetime.now() - timedelta(hours=1), datetime.now())
+
+if 'hum_datetime_range' not in st.session_state:
+    st.session_state.hum_datetime_range = (datetime.now() - timedelta(hours=1), datetime.now())
+
+if 'lux_datetime_range' not in st.session_state:
+    st.session_state.lux_datetime_range = (datetime.now() - timedelta(hours=1), datetime.now())
+
+if 'soil_datetime_range' not in st.session_state:
+    st.session_state.soil_datetime_range = (datetime.now() - timedelta(hours=1), datetime.now())
+
 col1, col2 = st.columns(2)
 
 # Place the widgets above the plot to avoid reloading the plot when the slider is moved     
