@@ -32,7 +32,7 @@ with col1:
     since_temp, until_temp = st.slider(
         "Select datetime range for Temperature",
         value=(datetime.now() - timedelta(hours=1), datetime.now()),
-        format="yyyy-mm-dd HH:mm",
+        format="yyyy-MM-DD HH:mm",
         key="temp_datetime_range"
     )
     fig_temp = plot_timeseries("dht_22", DATABASE, "temp_c", since_temp, until_temp)
@@ -41,7 +41,7 @@ with col1:
     since_hum, until_hum = st.slider(
     "Select datetime range for Humidity",
     value=(datetime.now() - timedelta(hours=1), datetime.now()),
-    format="yyyy-mm-dd HH:mm",
+    format="yyyy-MM-DD HH:mm",
     key="hum_datetime_range"
     )
     
@@ -56,7 +56,7 @@ with col2:
     since_lux, until_lux = st.slider(
     "Select datetime range for Lux",
     value=(datetime.now() - timedelta(hours=1), datetime.now()),
-    format="yyyy-mm-dd HH:mm",
+    format="yyyy-MM-DD HH:mm",
     key="lux_datetime_range"
 )
 
@@ -66,7 +66,7 @@ with col2:
     since_soil, until_soil = st.slider(
     "Select datetime range for Soil Moisture",
     value=(datetime.now() - timedelta(hours=1), datetime.now()),
-    format="yyyy-mm-dd HH:mm",
+    format="yyyy-MM-DD HH:mm",
     key="soil_datetime_range"
 )
     # Datetime range slider for soil moistur
