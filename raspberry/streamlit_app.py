@@ -1,6 +1,6 @@
 import streamlit as st
 from constants import DATABASE
-from helpers import plot_timeseries, get_time_range, plot_lux_timeseries
+from helpers import plot_timeseries, get_time_range, plot_lux_timeseries, plot_soil_moisture_timeseries
 import plotly.express as px
 from datetime import datetime, timedelta
 
@@ -20,7 +20,6 @@ time_options = {
     "Last Week": timedelta(weeks=1),
     "Last Month": timedelta(days=30)
 }
-
 
 # Place the widgets above the plot to avoid reloading the plot when the slider is moved     
 with col1:
@@ -62,5 +61,5 @@ with col2:
         key="soil_time_range"
     )
     since_soil, until_soil = get_time_range(soil_range, time_options)
-    fig_soil = plot_timeseries("soil_moisture_sens", DATABASE, "raw_value", since_soil, until_soil, "Soil Moisture in milli volts")
+    fig_soil = plot_soil_moisture_timeseries("soil_moisture_sens", DATABASE, "raw_value", since_soil, until_soil, "Soil Moisture in milli volts")
     st.plotly_chart(fig_soil)

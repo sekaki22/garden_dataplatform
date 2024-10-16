@@ -106,3 +106,41 @@ def plot_lux_timeseries(sensor_type, database, metric, since, until, title):
     )
     
     return fig
+
+def plot_soil_moisture_timeseries(sensor_type, database, metric, since, until, title):
+    """
+    Plot timeseries data for soil moisture with custom y-ticks
+
+    args:
+    sensor_type: Sqlite3 table name of specific sensor
+    database: path to SQLite database file
+    metric: name of the column to plot
+    since: start date for the plot
+    until: end date for the plot
+    title: title of the plot
+    
+    returns:
+    fig: plotly figure object
+    """
+
+    # Connect to SQLite db
+    conn = sqlite3.connect(database)
+    
+    # Query data with pandas method
+    query = f"SELECT * FROM {sensor_type} WHERE date_time > datetime('{since}') AND date_time < datetime('{until}')"
+    df = pd.read_sql_query(query, conn)
+
+    # Close connection
+    conn.close()
+
+    fig = px.line(df, x='date_time', y=metric, title=title)
+    fig.update_layout(
+        xaxis_title="Date and time", 
+        yaxis_title=metric,
+        yaxis=dict(
+            tickvals=[1000, 1200, 1800],
+            ticktext=["Sufficiently Wet", "Water the Plants", "Water as Soon as Possible!"]
+        )
+    )
+    
+    return fig
