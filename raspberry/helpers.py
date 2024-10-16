@@ -37,7 +37,7 @@ def get_time_range(selection, time_options):
     return datetime.now() - time_options[selection], datetime.now()
 
 
-def plot_timeseries(sensor_type, database, metric, since, until, title):
+def plot_timeseries(sensor_type, database, metric, since, until, title, y_range=None):
     """
     Plot timeseries data from SQLite database sensor data
 
@@ -46,8 +46,9 @@ def plot_timeseries(sensor_type, database, metric, since, until, title):
     database: path to SQLite database file
     metric: name of the column to plot
     since: start date for the plot
-    untill: end date for the plot
+    until: end date for the plot
     title: title of the plot
+    y_range: tuple specifying the y-axis range (min, max)
     
     returns:
     fig: plotly figure object
@@ -56,7 +57,7 @@ def plot_timeseries(sensor_type, database, metric, since, until, title):
     # Connect to SQLite db
     conn = sqlite3.connect(database)
     
-    #Query data with pandas method
+    # Query data with pandas method
     query = f"SELECT * FROM {sensor_type} WHERE date_time > datetime('{since}') AND date_time < datetime('{until}')"
     df = pd.read_sql_query(query, conn)
 
@@ -64,12 +65,15 @@ def plot_timeseries(sensor_type, database, metric, since, until, title):
     conn.close()
 
     fig = px.line(df, x='date_time', y=metric, title=title)
-    fig.update_layout(xaxis_title="Date and time", yaxis_title= metric)
+    fig.update_layout(xaxis_title="Date and time", yaxis_title=metric)
+    
+    if y_range:
+        fig.update_yaxes(range=y_range)
     
     return fig
 
 
-def plot_lux_timeseries(sensor_type, database, metric, since, until, title):
+def plot_lux_timeseries(sensor_type, database, metric, since, until, title, y_range=None):
     """
     Plot timeseries data for lux with custom y-ticks
 
@@ -80,6 +84,7 @@ def plot_lux_timeseries(sensor_type, database, metric, since, until, title):
     since: start date for the plot
     until: end date for the plot
     title: title of the plot
+    y_range: tuple specifying the y-axis range (min, max)
     
     returns:
     fig: plotly figure object
@@ -96,6 +101,7 @@ def plot_lux_timeseries(sensor_type, database, metric, since, until, title):
     conn.close()
 
     fig = px.line(df, x='date_time', y=metric, title=title)
+    fig.update_traces(line=dict(color='yellow'), fill='tozeroy', fillcolor='rgba(255, 255, 0, 0.3)')
     fig.update_layout(
         xaxis_title="Date and time", 
         yaxis_title=metric,
@@ -105,9 +111,12 @@ def plot_lux_timeseries(sensor_type, database, metric, since, until, title):
         )
     )
     
+    if y_range:
+        fig.update_yaxes(range=y_range)
+    
     return fig
 
-def plot_soil_moisture_timeseries(sensor_type, database, metric, since, until, title):
+def plot_soil_moisture_timeseries(sensor_type, database, metric, since, until, title, y_range=None):
     """
     Plot timeseries data for soil moisture with custom y-ticks
 
@@ -118,6 +127,7 @@ def plot_soil_moisture_timeseries(sensor_type, database, metric, since, until, t
     since: start date for the plot
     until: end date for the plot
     title: title of the plot
+    y_range: tuple specifying the y-axis range (min, max)
     
     returns:
     fig: plotly figure object
@@ -134,13 +144,18 @@ def plot_soil_moisture_timeseries(sensor_type, database, metric, since, until, t
     conn.close()
 
     fig = px.line(df, x='date_time', y=metric, title=title)
+    fig.update_traces(line=dict(color='blue'), fill='tonexty', fillcolor='rgba(0, 0, 255, 0.3)')
     fig.update_layout(
         xaxis_title="Date and time", 
         yaxis_title=metric,
         yaxis=dict(
             tickvals=[1000, 1200, 1800],
             ticktext=["Sufficiently Wet", "Water the Plants", "Water as Soon as Possible!"]
-        )
+        ),
+        plot_bgcolor='white'
     )
+    
+    if y_range:
+        fig.update_yaxes(range=y_range)
     
     return fig

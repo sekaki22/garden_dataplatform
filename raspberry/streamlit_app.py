@@ -40,7 +40,7 @@ with col1:
         key="hum_time_range"
     )
     since_hum, until_hum = get_time_range(hum_range, time_options)
-    fig_hum = plot_timeseries("dht_22", DATABASE, "humidity_perc", since_hum, until_hum, "Humidity Percentage")
+    fig_hum = plot_timeseries("dht_22", DATABASE, "humidity_perc", since_hum, until_hum, "Humidity Percentage", (40, 100))
     st.plotly_chart(fig_hum)
 
 with col2:
@@ -51,7 +51,7 @@ with col2:
         key="lux_time_range"
     )
     since_lux, until_lux = get_time_range(lux_range, time_options)
-    fig_lux = plot_lux_timeseries("tsl_2591", DATABASE, "lux", since_lux, until_lux, "Brightness")
+    fig_lux = plot_lux_timeseries("tsl_2591", DATABASE, "lux", since_lux, until_lux, "Brightness", (0, 50000))
     st.plotly_chart(fig_lux)
 
     # Radio button for soil moisture
