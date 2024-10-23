@@ -112,6 +112,34 @@ def post_analog(instance: BasicAnalogSensor, table_name: str):
     
     return "200: Data was ingested into database"
 
+# Add post request for voltage sensor
+@app.post('/sensors/voltage')
+def post_voltage(instance: VoltageSensor):
+    """
+    Process post requests by ingesting payload into database
+    """ 
+    # Create a cursor
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    conversion_rate = 2
+
+    # Convert microvoltage of adc to actual voltage capacity
+    battery_voltage = instance.battery_voltage / 4095 * 3.3 * conversion_rate
+    
+    query = """
+            INSERT INTO voltage_sens (date_time, battery_voltage)
+            VALUES (?, ?)
+            """ 
+   
+    # Create database input
+    datetime_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    database_input = (datetime_now, instance.battery_voltage)
+    # Execute and commit :)
+    cursor.execute(query, database_input)
+    conn.commit() 
+    
+    return "200: Voltage data was ingested into database"
+
 
 # Return the last record og any given sensor
 @app.get('/sensors/{sensor_name}/last_value')

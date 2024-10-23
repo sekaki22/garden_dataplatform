@@ -23,6 +23,17 @@ time_options = {
 
 # Place the widgets above the plot to avoid reloading the plot when the slider is moved     
 with col1:
+
+    # Add voltage sensor timeseries
+    voltage_range = st.radio(
+        "Select time range for Voltage",
+        options=list(time_options.keys()),
+        key="voltage_time_range"
+    )
+    since_voltage, until_voltage = get_time_range(voltage_range, time_options)
+    fig_voltage = plot_timeseries("voltage_sens", DATABASE, "converted_voltage", since_voltage, until_voltage, "Battery Voltage")
+    st.plotly_chart(fig_voltage)
+
     # Radio button for temperature
     temp_range = st.radio(
         "Select time range for Temperature",
@@ -32,6 +43,18 @@ with col1:
     since_temp, until_temp = get_time_range(temp_range, time_options)
     fig_temp = plot_timeseries("dht_22", DATABASE, "temp_c", since_temp, until_temp, "Temperature in Celsius")
     st.plotly_chart(fig_temp)
+
+     # Radio button for lux
+    lux_range = st.radio(
+        "Select time range for Lux",
+        options=list(time_options.keys()),
+        key="lux_time_range"
+    )
+    since_lux, until_lux = get_time_range(lux_range, time_options)
+    fig_lux = plot_lux_timeseries("tsl_2591", DATABASE, "lux", since_lux, until_lux, "Brightness", (0, 50000))
+    st.plotly_chart(fig_lux)
+
+with col2:
 
     # Radio button for humidity
     hum_range = st.radio(
@@ -43,16 +66,6 @@ with col1:
     fig_hum = plot_timeseries("dht_22", DATABASE, "humidity_perc", since_hum, until_hum, "Humidity Percentage", (40, 100))
     st.plotly_chart(fig_hum)
 
-with col2:
-    # Radio button for lux
-    lux_range = st.radio(
-        "Select time range for Lux",
-        options=list(time_options.keys()),
-        key="lux_time_range"
-    )
-    since_lux, until_lux = get_time_range(lux_range, time_options)
-    fig_lux = plot_lux_timeseries("tsl_2591", DATABASE, "lux", since_lux, until_lux, "Brightness", (0, 50000))
-    st.plotly_chart(fig_lux)
 
     # Radio button for soil moisture
     soil_range = st.radio(
@@ -63,3 +76,5 @@ with col2:
     since_soil, until_soil = get_time_range(soil_range, time_options)
     fig_soil = plot_soil_moisture_timeseries("soil_moisture_sens", DATABASE, "raw_value", since_soil, until_soil, "Soil Moisture in milli volts")
     st.plotly_chart(fig_soil)
+
+

@@ -40,9 +40,18 @@ date_time DATETIME,
 raw_value REAL);
 """
 
+# Create table statement for voltage
+create_table_statement_voltage = """
+CREATE TABLE IF NOT EXISTS voltage_sens
+(id INTEGER PRIMARY KEY AUTOINCREMENT,
+date_time DATETIME,
+converted_voltage REAL);
+"""
+
 # Execute statements on database file
 sql_statements = [create_table_statement_dht, create_table_statement_tsl, 
-                  create_table_statement_rs, create_table_statement_sm]
+                  create_table_statement_rs, create_table_statement_sm,
+                  create_table_statement_voltage]   
 
 for sql_statement in sql_statements:
     cursor.execute(sql_statement)

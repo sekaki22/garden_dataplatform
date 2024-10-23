@@ -28,9 +28,6 @@ const int analogPin1 = 32; // Analog input pin 1 (GPIO32)
 const int analogPin2 = 33; // Analog input pin 2 (GPIO33)
 const int analogPin3 = 34; // Analog input pin for battery voltage read (GPIO34)
 
-// conversion rate for voltage estimation
-const float conversionRate = 2;
-
 
 DHT dht(digitalPin1, DHTTYPE);
 
@@ -119,8 +116,9 @@ void loop() {
 
   // voltage read experiment
   float adcMillivolts =  analogRead(analogPin3);
-  float voltageEstimate = (adcMillivolts/4095) * 3.3 * conversionRate;
-  Serial.println(voltageEstimate);
+  String voltageUrl = "http://"+privateIpPi+portnumber+analog_endpoint+"?table_name=voltage_sens";
+  String voltagePL = "{\"battery_voltage\":" + String(adcMillivolts) + "}";
+  sendHttpPostRequest(voltageUrl, voltagePL);
 
   // Go into deep sleep mode to save costs
   esp_sleep_enable_timer_wakeup(60 * 1000000);  // 60 seconds (1 minute) in microseconds
