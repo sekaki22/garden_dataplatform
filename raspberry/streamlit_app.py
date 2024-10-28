@@ -31,7 +31,7 @@ with col1:
         key="voltage_time_range"
     )
     since_voltage, until_voltage = get_time_range(voltage_range, time_options)
-    fig_voltage = plot_timeseries("voltage_sens", DATABASE, "converted_voltage", since_voltage, until_voltage, "Battery Voltage")
+    fig_voltage = plot_timeseries("voltage_sens", DATABASE, "converted_voltage", since_voltage, until_voltage, "Battery Voltage", (0, 7))
     st.plotly_chart(fig_voltage)
 
     # Radio button for temperature

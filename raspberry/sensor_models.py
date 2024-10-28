@@ -12,3 +12,7 @@ class TSL2591(BaseModel):
 class BasicAnalogSensor(BaseModel):
     analog_value: float
 
+class VoltageSensor(BaseModel):
+    battery_voltage: float
+
+

@@ -2,6 +2,7 @@ import sqlite3
 import pandas as pd
 import plotly.express as px
 from datetime import datetime, timedelta
+from constants import DATABASE
 
 # Add docstring to the function with description, args, returns, raises, etc.           
 #          
@@ -35,6 +36,37 @@ def fetch_database(cursor, query):
     # Function to get the time range based on selection
 def get_time_range(selection, time_options):
     return datetime.now() - time_options[selection], datetime.now()
+
+def get_last_value(tablename, sensor_value):
+    """
+    Get the last value from a SQLite table based on datetime column
+
+    args:
+    tablename: name of the SQLite table
+    value: column name for the value to retrieve
+    
+    returns:
+    value: the most recent value from the specified column
+    timestamp: last recorded timestamp
+    """
+    # Connect to SQLite db
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+
+    # Query to get last value ordered by datetime
+    query = f"SELECT {sensor_value}, date_time FROM {tablename} ORDER BY date_time DESC LIMIT 1"
+    
+    # Execute query and fetch result
+    cursor.execute(query)
+    result = cursor.fetchone()
+    
+    # Close connection
+    conn.close()
+    
+    value, timestamp = result
+    
+    return value, timestamp
+
 
 
 def plot_timeseries(sensor_type, database, metric, since, until, title, y_range=None):

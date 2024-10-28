@@ -3,7 +3,7 @@ from constants import DATABASE
 from helpers import fetch_database
 import sqlite3
 import json
-from sensor_models import DHT22, TSL2591, BasicAnalogSensor
+from sensor_models import DHT22, TSL2591, BasicAnalogSensor, VoltageSensor
 from datetime import datetime
 
 app = FastAPI()
@@ -127,13 +127,13 @@ def post_voltage(instance: VoltageSensor):
     battery_voltage = instance.battery_voltage / 4095 * 3.3 * conversion_rate
     
     query = """
-            INSERT INTO voltage_sens (date_time, battery_voltage)
+            INSERT INTO voltage_sens (date_time, converted_voltage)
             VALUES (?, ?)
             """ 
    
     # Create database input
     datetime_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    database_input = (datetime_now, instance.battery_voltage)
+    database_input = (datetime_now, battery_voltage)
     # Execute and commit :)
     cursor.execute(query, database_input)
     conn.commit() 
