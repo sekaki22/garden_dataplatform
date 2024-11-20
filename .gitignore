@@ -7,3 +7,4 @@ __pycache__/
 .vscode/extensions.json
 .vscode/ipch
 **/environment_var.h
+raspberry/static/images/*
