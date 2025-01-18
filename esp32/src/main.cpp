@@ -44,7 +44,7 @@ void setup() {
     // Configure the pins
   pinMode(analogPin1, INPUT);
   pinMode(analogPin2, INPUT);
-  Serial.begin(921600);
+  Serial.begin(115200);
   Serial.println("Hello from setup");
   Serial.println(ssid);
   Serial.println(password);
@@ -115,15 +115,17 @@ void loop() {
   sendHttpPostRequest(soilMoistureUrl, soilMoisturePL);
 
   // voltage read experiment
-  float adcMillivolts =  analogRead(analogPin3);
-  String voltageUrl = "http://"+privateIpPi+portnumber+analog_endpoint+"?table_name=voltage_sens";
-  String voltagePL = "{\"battery_voltage\":" + String(adcMillivolts) + "}";
-  sendHttpPostRequest(voltageUrl, voltagePL);
+  // float adcMillivolts =  analogRead(analogPin3);
+  // String voltageUrl = "http://"+privateIpPi+portnumber+analog_endpoint+"?table_name=voltage_sens";
+  // String voltagePL = "{\"battery_voltage\":" + String(adcMillivolts) + "}";
+  // sendHttpPostRequest(voltageUrl, voltagePL);
 
   // Go into deep sleep mode to save costs
-  esp_sleep_enable_timer_wakeup(60 * 1000000);  // 60 seconds (1 minute) in microseconds
-  Serial.println("Going to sleep for 60 seconds...");
-  esp_deep_sleep_start();
+  // esp_sleep_enable_timer_wakeup(60 * 1000000);  // 60 seconds (1 minute) in microseconds
+  // Serial.println("Going to sleep for 60 seconds...");
+  // esp_deep_sleep_start();
+
+  delay(60000);
 
 
 }
