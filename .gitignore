@@ -8,3 +8,4 @@ __pycache__/
 .vscode/ipch
 **/environment_var.h
 raspberry/static/images/*
+.DS_STORE

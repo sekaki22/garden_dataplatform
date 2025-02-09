@@ -24,7 +24,7 @@
 // Create pointers for the BLE objects
 //BLEServer* pServer = NULL;
 BLECharacteristic* pTemperatureCharacteristic = NULL;
-//BLECharacteristic* pHumidityCharacteristic = NULL;
+BLECharacteristic* pHumidityCharacteristic = NULL;
 BLEDescriptor *pTemperatureDescriptor;
 BLE2902 *pBLE2902;
 
@@ -37,7 +37,7 @@ uint32_t value = 0;
 
 #define SERVICE_UUID "8aff4410-808a-4ce2-af5c-4122e0e05860"
 #define TEMPERATURE_CHARACTERISTIC_UUID "c4d834e5-008d-4591-a977-351cc4c0b370"
-//#define HUMIDITY_CHARACTERISTIC_UUID "240e3b5b-c64e-44c8-b466-fdd4fa16e112"
+#define HUMIDITY_CHARACTERISTIC_UUID "240e3b5b-c64e-44c8-b466-fdd4fa16e112"
 
 // Define DHT version
 #define DHTTYPE DHT22
@@ -69,8 +69,7 @@ void setup() {
   // Create the BLE Service
   BLEService *pService = pServer->createService(SERVICE_UUID);
 
-  pBLE2902 = new BLE2902();
-  pBLE2902->setNotifications(true);
+
 
   // Create a BLE Characteristic
   pTemperatureCharacteristic = pService->createCharacteristic(
@@ -79,9 +78,17 @@ void setup() {
                                 BLECharacteristic::PROPERTY_READ |
                                 BLECharacteristic::PROPERTY_INDICATE
                               );  
+  
+  pHumidityCharacteristic = pService->createCharacteristic(
+                                HUMIDITY_CHARACTERISTIC_UUID,
+                                BLECharacteristic::PROPERTY_NOTIFY |
+                                BLECharacteristic::PROPERTY_READ |
+                                BLECharacteristic::PROPERTY_INDICATE
+                              );
 
-  // Create a BLE Descriptor and add it to the characteristic
-  pTemperatureCharacteristic->addDescriptor(pBLE2902);
+  // Create a BLE Descriptor and add it to the characteristics
+  pTemperatureCharacteristic->addDescriptor(new BLE2902());
+  pHumidityCharacteristic->addDescriptor(new BLE2902());
   
 
   // Create a BLE Descriptor
@@ -102,8 +109,6 @@ void setup() {
   // pHumidityDescriptor->setValue("Humidity Characteristic");
   // pHumidityCharacteristic->addDescriptor(pHumidityDescriptor);
   
-  // pBLE2902 = new BLE2902();
-  // pBLE2902->setNotifications(true);
 
   // Initialize the analog pins
   pinMode(analogPin1, INPUT);
@@ -147,11 +152,11 @@ void loop() {
         pTemperatureCharacteristic->setValue(tempBytes, sizeof(tempBytes));
         pTemperatureCharacteristic->notify();
 
-        // uint8_t humidityBytes[4];
-        // memcpy(humidityBytes, &humidity, sizeof(humidity));
+        uint8_t humidityBytes[4];
+        memcpy(humidityBytes, &humidity, sizeof(humidity));
         // // single precision
-        // pHumidityCharacteristic->setValue(humidityBytes, sizeof(humidityBytes));
-        // pHumidityCharacteristic->notify();
+        pHumidityCharacteristic->setValue(humidityBytes, sizeof(humidityBytes));
+        pHumidityCharacteristic->notify();
 
         delay(10000);
     }
