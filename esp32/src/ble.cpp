@@ -21,10 +21,15 @@
 
 
 // Globals & pointers
+// Create pointers for the BLE objects
+//BLEServer* pServer = NULL;
 BLECharacteristic* pTemperatureCharacteristic = NULL;
+//BLECharacteristic* pHumidityCharacteristic = NULL;
 BLEDescriptor *pTemperatureDescriptor;
 BLE2902 *pBLE2902;
-BLECharacteristic* pHumidityCharacteristic = NULL;
+
+
+uint32_t value = 0;
 
 
 // See the following for generating UUIDs:
@@ -64,18 +69,25 @@ void setup() {
   // Create the BLE Service
   BLEService *pService = pServer->createService(SERVICE_UUID);
 
+  pBLE2902 = new BLE2902();
+  pBLE2902->setNotifications(true);
+
   // Create a BLE Characteristic
   pTemperatureCharacteristic = pService->createCharacteristic(
                                 TEMPERATURE_CHARACTERISTIC_UUID,
                                 BLECharacteristic::PROPERTY_NOTIFY |
                                 BLECharacteristic::PROPERTY_READ |
                                 BLECharacteristic::PROPERTY_INDICATE
-                              );                   
+                              );  
+
+  // Create a BLE Descriptor and add it to the characteristic
+  pTemperatureCharacteristic->addDescriptor(pBLE2902);
+  
 
   // Create a BLE Descriptor
-  BLEDescriptor* pDescriptor = new BLEDescriptor(BLEUUID((uint16_t)0x2901));
-  pTemperatureDescriptor->setValue("Temperature Characteristic");
-  pTemperatureCharacteristic->addDescriptor(pDescriptor);
+  // BLEDescriptor* pDescriptor = new BLEDescriptor(BLEUUID((uint16_t)0x2901));
+  // // pTemperatureDescriptor->setValue("Temperature Characteristic");
+  // pTemperatureCharacteristic->addDescriptor(pDescriptor);
 
   // Create a BLE Characteristic for humidity
   // pHumidityCharacteristic = pService->createCharacteristic(
@@ -90,8 +102,8 @@ void setup() {
   // pHumidityDescriptor->setValue("Humidity Characteristic");
   // pHumidityCharacteristic->addDescriptor(pHumidityDescriptor);
   
-  pBLE2902 = new BLE2902();
-  pBLE2902->setNotifications(true);
+  // pBLE2902 = new BLE2902();
+  // pBLE2902->setNotifications(true);
 
   // Initialize the analog pins
   pinMode(analogPin1, INPUT);
