@@ -46,8 +46,6 @@ void setup() {
   pinMode(analogPin2, INPUT);
   Serial.begin(115200);
   Serial.println("Hello from setup");
-  Serial.println(ssid);
-  Serial.println(password);
 
     // Connect to Wi-Fi
   WiFi.begin(ssid, password);
