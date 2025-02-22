@@ -9,3 +9,4 @@ __pycache__/
 **/environment_var.h
 raspberry/static/images/*
 .DS_STORE
+.venv 
