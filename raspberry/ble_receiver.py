@@ -1,60 +1,84 @@
 import asyncio
 from bleak import BleakScanner, BleakClient
-from constants import BLE_SERVER_UUID
 import struct
+from dataclasses import dataclass
+from typing import Dict, Optional, Callable
 
-# Define the service UUID and characteristic UUID you want to read
-# TARGET_SERVICE_UUID = "YOUR_SERVICE_UUID_HERE"  # Replace with your service UUID
-TARGET_CHARACTERISTIC_UUID = "240e3b5b-c64e-44c8-b466-fdd4fa16e112"  # Replace with your characteristic UUID
-TARGET_DEVICE_NAME = "ESP32"  # Replace with your device name
+@dataclass
+class BLECharacteristic:
+    uuid: str
+    name: str
+    value: float = 0.0
 
-async def scan_and_connect():
-    print("Scanning for BLE devices...")
-    
-    devices = await BleakScanner.discover()
-    target_device = None
-    
-    for device in devices:
-        print(f"Found device: {device.name} ({device.address})")
-        if device.name and TARGET_DEVICE_NAME in device.name:
-            target_device = device
-            break
-    
-    if not target_device:
-        print("Target device not found")
-        return
-    
-    print(f"Connecting to {target_device.name}...")
-    
-    async with BleakClient(target_device.address) as client:
-        try:
-            if client.is_connected:
-                print("Connected successfully!")
-                
-                # Notification handler
-                def notification_handler(sender, data):
-                    if len(data) == 4:
-                        float_value = struct.unpack('<f', data)[0]
-                        print(f"Notification received - Float value: {float_value}")
-                    else:
-                        print(f"Notification received - Raw data: {data}")
+class BLEHandler:
+    def __init__(self, device_name: str, characteristics: Dict[str, str]):
+        self.device_name = device_name
+        self.characteristics = {
+            uuid: BLECharacteristic(uuid=uuid, name=name)
+            for uuid, name in characteristics.items()
+        }
+        self.client: Optional[BleakClient] = None
 
-                # Enable notifications
-                print("Subscribing to notifications...")
-                await client.start_notify(TARGET_CHARACTERISTIC_UUID, notification_handler)
-                
-                # Keep connection alive to receive notifications
-                print("Waiting for notifications...")
-                while True:
-                    await asyncio.sleep(1)
+    def notification_handler(self, characteristic_uuid: str) -> Callable:
+        def handle_notification(sender, data):
+            if len(data) == 4:
+                float_value = struct.unpack('<f', data)[0]
+                self.characteristics[characteristic_uuid].value = float_value
+                print(f"{self.characteristics[characteristic_uuid].name}: {float_value}")
+            else:
+                print(f"Raw data for {self.characteristics[characteristic_uuid].name}: {data}")
+        return handle_notification
+
+    async def scan_for_device(self):
+        print("Scanning for BLE devices...")
+        devices = await BleakScanner.discover()
+        for device in devices:
+            print(f"Found device: {device.name} ({device.address})")
+            if device.name and self.device_name in device.name:
+                return device
+        return None
+
+    async def connect_and_subscribe(self):
+        device = await self.scan_for_device()
+        if not device:
+            print("Target device not found")
+            return
+
+        print(f"Connecting to {device.name}...")
+        async with BleakClient(device.address) as client:
+            try:
+                if client.is_connected:
+                    print("Connected successfully!")
                     
-        except Exception as e:
-            print(f"Error: {str(e)}")
+                    # Subscribe to all characteristics
+                    for uuid in self.characteristics:
+                        print(f"Subscribing to {self.characteristics[uuid].name}...")
+                        await client.start_notify(
+                            uuid, 
+                            self.notification_handler(uuid)
+                        )
+                    
+                    print("Waiting for notifications...")
+                    while True:
+                        await asyncio.sleep(1)
+                        
+            except Exception as e:
+                print(f"Error: {str(e)}")
 
-async def main():
-    while True:
-        await scan_and_connect()
-        await asyncio.sleep(5)  # Wait 5 seconds before scanning again
+    async def run(self):
+        while True:
+            await self.connect_and_subscribe()
+            await asyncio.sleep(5)
+
+def main():
+    # Define characteristics with their UUIDs and names
+    characteristics = {
+        "240e3b5b-c64e-44c8-b466-fdd4fa16e112": "Temperature",
+        "c4d834e5-008d-4591-a977-351cc4c0b370": "Humidity"
+    }
+    
+    handler = BLEHandler("ESP32", characteristics)
+    asyncio.run(handler.run())
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
