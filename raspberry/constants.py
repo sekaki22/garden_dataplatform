@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 # Constants
 
 #sqlite database location
-DATABASE = "/home/selim/raspberry_sensors.db" 
+DATABASE = "/home/selim/databases/esp32_sensors.db" 
 
 # Define time range options
 time_options = {
