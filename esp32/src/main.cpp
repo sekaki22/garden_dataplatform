@@ -84,30 +84,6 @@ void setup() {
       LUX_CHARACTERISTIC_UUID, "Lux Characteristic");
   pSoilMoistureCharacteristic = createCharacteristic(pService,
       SOIL_MOISTURE_CHARACTERISTIC_UUID, "Soil moisture Characteristic");
-
-  // Create a BLE Descriptor and add it to the characteristics
-  // pTemperatureCharacteristic->addDescriptor(new BLE2902());
-  // pHumidityCharacteristic->addDescriptor(new BLE2902());
-  // pLuxCharacteristic->addDescriptor(new BLE2902());
-  // pSoilMoistureCharacteristic->addDescriptor(new BLE2902());
-  
-  // Create a BLE Descriptor
-  // BLEDescriptor* pDescriptor = new BLEDescriptor(BLEUUID((uint16_t)0x2901));
-  // // pTemperatureDescriptor->setValue("Temperature Characteristic");
-  // pTemperatureCharacteristic->addDescriptor(pDescriptor);
-
-  // Create a BLE Characteristic for humidity
-  // pHumidityCharacteristic = pService->createCharacteristic(
-  //                             HUMIDITY_CHARACTERISTIC_UUID,
-  //                             BLECharacteristic::PROPERTY_NOTIFY |
-  //                             BLECharacteristic::PROPERTY_READ |
-  //                             BLECharacteristic::PROPERTY_INDICATE
-  //                           );
-
-  // Create a BLE Descriptor for humidity
-  // BLEDescriptor* pHumidityDescriptor = new BLEDescriptor(BLEUUID((uint16_t)0x2901));
-  // pHumidityDescriptor->setValue("Humidity Characteristic");
-  // pHumidityCharacteristic->addDescriptor(pHumidityDescriptor);
   
 
   // Initialize the analog pins
