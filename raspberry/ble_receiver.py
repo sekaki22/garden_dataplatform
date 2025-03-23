@@ -50,17 +50,26 @@ class BLEHandler:
                 if client.is_connected:
                     print("Connected successfully!")
                     
-                    # Subscribe to all characteristics
+                    # Subscribe to all characteristics except soil_moisture
                     for uuid in self.characteristics:
-                        print(f"Subscribing to {self.characteristics[uuid].name}...")
-                        await client.start_notify(
-                            uuid, 
-                            self.notification_handler(uuid)
-                        )
+                        if self.characteristics[uuid].name != "soil_moisture":
+                            print(f"Subscribing to {self.characteristics[uuid].name}...")
+                            await client.start_notify(
+                                uuid, 
+                                self.notification_handler(uuid)
+                            )
                     
-                    print("Waiting for notifications...")
+                    soil_moisture_uuid = "9620b346-71ad-4469-8896-afe218d5cc9b"
+                    print("Starting polling loop...")
                     while True:
-                        await asyncio.sleep(1)
+                        # Read soil moisture value
+                        data = await client.read_gatt_char(soil_moisture_uuid)
+                        if len(data) == 4:
+                            float_value = struct.unpack('<f', data)[0]
+                            self.characteristics[soil_moisture_uuid].value = float_value
+                            print(f"soil_moisture: {float_value}")
+                        
+                        await asyncio.sleep(10)  # Poll every second
                         
             except Exception as e:
                 print(f"Error: {str(e)}")
