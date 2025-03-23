@@ -73,8 +73,10 @@ class BLEHandler:
 def main():
     # Define characteristics with their UUIDs and names
     characteristics = {
-        "240e3b5b-c64e-44c8-b466-fdd4fa16e112": "Temperature",
-        "c4d834e5-008d-4591-a977-351cc4c0b370": "Humidity"
+        "c4d834e5-008d-4591-a977-351cc4c0b370": "temperature",
+        "240e3b5b-c64e-44c8-b466-fdd4fa16e112": "humidity",
+        "9620b346-71ad-4469-8896-afe218d5cc9b": "soil_moisture",
+        "6264ad6f-193a-468d-b5b0-b687835a4495": "lux"
     }
     
     handler = BLEHandler("ESP32", characteristics)
